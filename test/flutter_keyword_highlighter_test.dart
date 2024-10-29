@@ -1,18 +1,37 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_keyword_highlighter/flutter_keyword_highlighter.dart';
 
 void main() {
-  test('HighlightedText highlights the correct words', () {
-    final highlightedText = HighlightedText(
-      paragraph: 'Flutter is great.',
-      searchWord: 'Flutter',
-      fontSize: 16.0,
-      highlightedTextSize: 17.0,
-
+  testWidgets('HighlightedText highlights specified text', (WidgetTester tester) async {
+    // Build the HighlightedText widget
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: HighlightedText(
+            paragraph: 'This is an example paragraph for testing.',
+            highlightTexts: [
+              HighlightText(
+                'example',
+                const TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+                fontSize: 18.0,
+              ),
+            ],
+            defaultTextStyle: const TextStyle(fontSize: 14.0),
+          ),
+        ),
+      ),
     );
 
-    // Add assertions to test the functionality
-    expect(highlightedText, isA<HighlightedText>());
-    // Additional tests can check the rendering logic, etc.
+    // Verify that the highlighted text is present
+    expect(find.text('example'), findsOneWidget);
+
+    // Verify the text is styled correctly
+
   });
+
+
 }
