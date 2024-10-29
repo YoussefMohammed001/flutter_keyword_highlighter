@@ -1,7 +1,7 @@
 name: flutter_keyword_highlighter
 description: "A Flutter package to highlight specific keywords in text."
 version: 0.0.1
-homepage: https://github.com/YoussefMohammed001/flutter_keyword_highlighter # Replace with your actual URL
+homepage: https://github.com/yourusername/flutter_keyword_highlighter # Replace with your actual URL
 
 environment:
   sdk: ">=2.17.0 <3.0.0" # Updated Dart SDK version
@@ -19,5 +19,5 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-publish_to: 'https://pub.dev'
-tag_pattern: 'v{{version}}' # Tag pattern for versioning
+# Optionally include the tag pattern if you're using version tagging
+tag_pattern: 'v{{version}}'
