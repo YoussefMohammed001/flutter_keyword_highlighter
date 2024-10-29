@@ -1,65 +1,98 @@
 library flutter_keyword_highlighter;
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class HighlightedText extends StatelessWidget {
   final String paragraph;
-  final String searchWord;
-  final double fontSize;
-  final Color highlightColor;      // Default highlight color
-  final Color highlightTextColor;  // Default highlighted text color
-  final double highlightedTextSize; // Specific size for the highlighted text
+  final List<HighlightText> highlightTexts; // List of highlighted texts with styles
+  final TextStyle? defaultTextStyle; // Custom default text style for the paragraph
 
   const HighlightedText({super.key,
     required this.paragraph,
-    required this.searchWord,
-    required this.fontSize,
-    this.highlightColor = Colors.yellow,       // Default highlight color is yellow
-    this.highlightTextColor = Colors.black,    // Default text color is black
-    this.highlightedTextSize = 16.0,           // Default size for highlighted text
+    required this.highlightTexts,
+    this.defaultTextStyle, // Optional default text style for paragraph
   });
 
   @override
   Widget build(BuildContext context) {
     List<TextSpan> spans = [];
-    String pattern = RegExp.escape(searchWord);
-    RegExp regExp = RegExp(pattern, caseSensitive: false);
-
     int start = 0;
-    for (final match in regExp.allMatches(paragraph)) {
-      if (match.start > start) {
-        spans.add(TextSpan(
-          text: paragraph.substring(start, match.start),
-          style: TextStyle(fontSize: fontSize),
-        ));
+
+    // Iterate through the list of highlight texts
+    for (final highlight in highlightTexts) {
+      String pattern = RegExp.escape(highlight.text);
+      RegExp regExp = RegExp(pattern, caseSensitive: false);
+
+      // Add text before the highlight
+      while (true) {
+        final match = regExp.firstMatch(paragraph.substring(start));
+        if (match == null) break; // No more matches
+
+        if (match.start > 0) {
+          spans.add(TextSpan(
+            text: paragraph.substring(start, start + match.start),
+            style: defaultTextStyle ?? const TextStyle(fontSize: 14.0), // Default font size if not provided
+          ));
+        }
+
+        // Add highlighted text with its specific font size
+        spans.add(
+          TextSpan(
+            text: match.group(0),
+            style: highlight.style.copyWith(fontSize: highlight.fontSize), // Use the specific style and font size for this highlight
+          ),
+        );
+
+        start += match.end; // Move the start to after the match
       }
 
-      spans.add(
-        TextSpan(
-          text: paragraph.substring(match.start, match.end),
-          style: TextStyle(
-            fontSize: highlightedTextSize,
-            color: highlightTextColor,
-            backgroundColor: highlightColor,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      );
-
-      start = match.end;
+      // Highlight specific indices if provided
+      if (highlight.specificIndices != null) {
+        for (int index in highlight.specificIndices!) {
+          // Check if index is within bounds
+          if (index >= 0 && index < paragraph.length) {
+            final char = paragraph[index];
+            spans.insert(index, TextSpan(
+              text: char,
+              style: const TextStyle(
+                backgroundColor: Colors.yellow, // Default background for specific index
+                fontWeight: FontWeight.bold,
+              ),
+            ));
+          } else {
+            // Log a warning for out-of-bounds index
+            if (kDebugMode) {
+              print('Warning: Specific index $index is out of bounds for the paragraph.');
+            }
+          }
+        }
+      }
     }
 
+    // Add remaining text after last highlight
     if (start < paragraph.length) {
       spans.add(TextSpan(
         text: paragraph.substring(start),
-        style: TextStyle(fontSize: fontSize),
+        style: defaultTextStyle ?? const TextStyle(fontSize: 14.0), // Default font size if not provided
       ));
     }
 
     return RichText(
       text: TextSpan(
         children: spans,
-        style: TextStyle(fontSize: fontSize),
+        style: defaultTextStyle ?? const TextStyle(fontSize: 14.0), // Default font size if not provided
       ),
     );
   }
+}
+
+// A class to hold text, its style, specific indices, and font size for highlighting
+class HighlightText {
+  final String text;
+  final TextStyle style;
+  final List<int>? specificIndices; // Optional list of specific indices for highlighting
+  final double fontSize; // Font size for the highlighted text
+
+  HighlightText(this.text, this.style, {this.specificIndices, this.fontSize = 14.0}); // Default font size is 14.0
 }

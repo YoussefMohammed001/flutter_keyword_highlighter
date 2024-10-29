@@ -1,8 +1,7 @@
 name: flutter_keyword_highlighter
 description: "A Flutter package to highlight specific keywords in text."
-version: 0.0.1
-homepage: https://github.com/yourusername/flutter_keyword_highlighter # Replace with your actual URL
-license: MIT # Specify the license here
+version: 0.0.2 # Incremented version number
+homepage: https://github.com/yourusername/flutter_keyword_highlighter
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
