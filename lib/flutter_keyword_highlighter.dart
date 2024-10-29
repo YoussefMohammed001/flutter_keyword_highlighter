@@ -2,39 +2,48 @@ library flutter_keyword_highlighter;
 
 import 'package:flutter/material.dart';
 
-/// A widget that highlights specific keywords or phrases within a given content.
-///
-/// The `HighlightedText` widget takes a [content] string, a list of [highlightedTextStyles],
-/// and an optional [defaultTextStyle] for unhighlighted text. Each keyword or phrase in
-/// `highlightedTextStyles` will appear with its specified color and font style.
+/// A widget that highlights specified words or phrases in a text
+/// with customizable text styles. Allows optional partial matching.
 class HighlightedText extends StatelessWidget {
-  final String content; // The main content to be displayed
-  final List<HighlightedTextStyle> highlightedTextStyles; // List of highlighted text styles
-  final TextStyle? defaultTextStyle; // Custom default text style for content
+  /// The main content text where keywords will be highlighted.
+  final String content;
+
+  /// A list of styles for specific words or phrases to be highlighted
+  /// in the content text.
+  final List<HighlightedTextStyle> highlightedTextStyles;
+
+  /// An optional default text style for the content text.
+  /// If not provided, a default font size and black color will be used.
+  final TextStyle? defaultTextStyle;
 
   const HighlightedText({
     super.key,
     required this.content,
     required this.highlightedTextStyles,
-    this.defaultTextStyle, // Optional default text style for content
+    this.defaultTextStyle,
   });
 
   @override
   Widget build(BuildContext context) {
-    List<TextSpan> textSpans = [];
-    int startIndex = 0;
+    List<TextSpan> textSpans = []; // Holds styled text spans for RichText.
+    int startIndex = 0; // Tracks current index in content string.
 
-    // Iterate through each highlighted text style
+    // Loop through each highlight style in the list to apply to content text.
     for (final highlight in highlightedTextStyles) {
+      // Escape special characters in highlight text for accurate matching.
       String escapedText = RegExp.escape(highlight.text);
-      RegExp regex = RegExp(escapedText, caseSensitive: false);
 
-      // Process each occurrence of the text to be highlighted
+      // Create a regex based on `containsMatch` to control match type.
+      RegExp regex = highlight.containsMatch
+          ? RegExp(escapedText, caseSensitive: false)
+          : RegExp(r'\b' + escapedText + r'\b', caseSensitive: false);
+
+      // Find all matches in content text, add surrounding and highlighted text.
       while (true) {
         final match = regex.firstMatch(content.substring(startIndex));
-        if (match == null) break; // Exit loop if no more matches
+        if (match == null) break; // Exit if no match found.
 
-        // Add non-highlighted text before the matched highlighted text
+        // Add unhighlighted text span before the match.
         if (match.start > 0) {
           textSpans.add(TextSpan(
             text: content.substring(startIndex, startIndex + match.start),
@@ -43,18 +52,21 @@ class HighlightedText extends StatelessWidget {
           ));
         }
 
-        // Add highlighted text
-        textSpans.add(TextSpan(
-          text: match.group(0),
-          style: highlight.style.copyWith(
-              fontSize: highlight.fontSize, color: highlight.color),
-        ));
+        // Add highlighted text span with specified style.
+        textSpans.add(
+          TextSpan(
+            text: match.group(0),
+            style: highlight.style.copyWith(
+              fontSize: highlight.fontSize,
+            ),
+          ),
+        );
 
-        startIndex += match.end; // Move startIndex past the matched text
+        startIndex += match.end; // Move start to next unmatched section.
       }
     }
 
-    // Add remaining unhighlighted text after the last match
+    // Add any remaining unhighlighted text after the last match.
     if (startIndex < content.length) {
       textSpans.add(TextSpan(
         text: content.substring(startIndex),
@@ -63,6 +75,7 @@ class HighlightedText extends StatelessWidget {
       ));
     }
 
+    // Use RichText to display the content with all specified highlights.
     return RichText(
       text: TextSpan(
         children: textSpans,
@@ -73,18 +86,25 @@ class HighlightedText extends StatelessWidget {
   }
 }
 
-/// A class that represents a segment of text to be highlighted, with customizable
-/// color, font style, and font size.
+/// Defines a style for specific text to be highlighted within the content.
 class HighlightedTextStyle {
-  final String text; // Text to highlight
-  final TextStyle style; // Text style for the highlighted text
-  final double fontSize; // Font size for the highlighted text
-  final Color color; // Color for the highlighted text
+  /// Text to be highlighted in the main content.
+  final String text;
+
+  /// Custom style for the highlighted text, including color, font, etc.
+  final TextStyle style;
+
+  /// Font size for the highlighted text. Defaults to 14.0 if not specified.
+  final double fontSize;
+
+  /// Determines if this highlight should match any occurrence
+  /// (substring match) or an exact match.
+  final bool containsMatch;
 
   HighlightedTextStyle(
-      this.text, {
-        required this.style,
-        this.fontSize = 14.0,
-        this.color = Colors.black, // Default color for highlighted text
-      });
+    this.text,
+    this.style, {
+    this.fontSize = 14.0,
+    this.containsMatch = false,
+  });
 }
