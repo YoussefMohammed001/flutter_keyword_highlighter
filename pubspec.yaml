@@ -1,11 +1,13 @@
 name: flutter_keyword_highlighter
-description: "A Flutter package to highlight specific keywords in text."
-version: 0.0.4
-homepage: https://github.com/yourusername/flutter_keyword_highlighter # Replace with your actual URL
+description: A Flutter package to highlight specific keywords in text with customizable styles.
+version: 0.1.0  # Make sure this version is updated if you've published before.
+homepage: https://github.com/YoussefMohammed001/flutter_keyword_highlighter  # Replace with your actual URL
+repository: https://github.com/YoussefMohammed001/flutter_keyword_highlighter  # Replace with your actual repository URL
+issue_tracker: https://github.com/YoussefMohammed001/flutter_keyword_highlighter/issues  # Replace with your actual issue tracker URL
 
 environment:
-  sdk: ">=2.17.0 <3.0.0" # Updated Dart SDK version
-  flutter: ">=3.0.0"      # Ensure this matches your Flutter version
+  sdk: ">=2.17.0 <3.0.0"
+  flutter: ">=3.0.0"
 
 dependencies:
   flutter:
@@ -18,6 +20,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  example: example/
 
-# Optionally include the tag pattern if you're using version tagging
-tag_pattern: 'v{{version}}'
+# Add a section for any additional assets (if applicable)
+# assets:
+#   - assets/images/
+
+# Additional metadata for pub.dev
+publish_to: 'https://pub.dev'  # This should point to pub.dev

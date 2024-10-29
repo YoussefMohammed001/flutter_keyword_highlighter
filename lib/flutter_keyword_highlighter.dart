@@ -4,56 +4,57 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class HighlightedText extends StatelessWidget {
-  final String paragraph;
-  final List<HighlightText> highlightTexts; // List of highlighted texts with styles
-  final TextStyle? defaultTextStyle; // Custom default text style for the paragraph
+  final String content; // Renamed from 'paragraph' to 'content'
+  final List<HighlightedTextStyle> highlightedTextStyles; // Renamed from 'highlightTexts' to 'highlightedTextStyles'
+  final TextStyle? defaultTextStyle; // Custom default text style for the content
 
-  const HighlightedText({super.key,
-    required this.paragraph,
-    required this.highlightTexts,
-    this.defaultTextStyle, // Optional default text style for paragraph
+  const HighlightedText({
+    super.key,
+    required this.content,
+    required this.highlightedTextStyles,
+    this.defaultTextStyle, // Optional default text style for content
   });
 
   @override
   Widget build(BuildContext context) {
-    List<TextSpan> spans = [];
-    int start = 0;
+    List<TextSpan> textSpans = [];
+    int startIndex = 0;
 
-    // Iterate through the list of highlight texts
-    for (final highlight in highlightTexts) {
-      String pattern = RegExp.escape(highlight.text);
-      RegExp regExp = RegExp(pattern, caseSensitive: false);
+    // Iterate through the list of highlighted text styles
+    for (final highlight in highlightedTextStyles) {
+      String escapedText = RegExp.escape(highlight.text);
+      RegExp regex = RegExp(escapedText, caseSensitive: false);
 
       // Add text before the highlight
       while (true) {
-        final match = regExp.firstMatch(paragraph.substring(start));
+        final match = regex.firstMatch(content.substring(startIndex));
         if (match == null) break; // No more matches
 
         if (match.start > 0) {
-          spans.add(TextSpan(
-            text: paragraph.substring(start, start + match.start),
+          textSpans.add(TextSpan(
+            text: content.substring(startIndex, startIndex + match.start),
             style: defaultTextStyle ?? const TextStyle(fontSize: 14.0), // Default font size if not provided
           ));
         }
 
         // Add highlighted text with its specific font size
-        spans.add(
+        textSpans.add(
           TextSpan(
             text: match.group(0),
             style: highlight.style.copyWith(fontSize: highlight.fontSize), // Use the specific style and font size for this highlight
           ),
         );
 
-        start += match.end; // Move the start to after the match
+        startIndex += match.end; // Move the start to after the match
       }
 
       // Highlight specific indices if provided
       if (highlight.specificIndices != null) {
         for (int index in highlight.specificIndices!) {
           // Check if index is within bounds
-          if (index >= 0 && index < paragraph.length) {
-            final char = paragraph[index];
-            spans.insert(index, TextSpan(
+          if (index >= 0 && index < content.length) {
+            final char = content[index];
+            textSpans.insert(index, TextSpan(
               text: char,
               style: const TextStyle(
                 backgroundColor: Colors.yellow, // Default background for specific index
@@ -63,7 +64,7 @@ class HighlightedText extends StatelessWidget {
           } else {
             // Log a warning for out-of-bounds index
             if (kDebugMode) {
-              print('Warning: Specific index $index is out of bounds for the paragraph.');
+              print('Warning: Specific index $index is out of bounds for the content.');
             }
           }
         }
@@ -71,16 +72,16 @@ class HighlightedText extends StatelessWidget {
     }
 
     // Add remaining text after last highlight
-    if (start < paragraph.length) {
-      spans.add(TextSpan(
-        text: paragraph.substring(start),
+    if (startIndex < content.length) {
+      textSpans.add(TextSpan(
+        text: content.substring(startIndex),
         style: defaultTextStyle ?? const TextStyle(fontSize: 14.0), // Default font size if not provided
       ));
     }
 
     return RichText(
       text: TextSpan(
-        children: spans,
+        children: textSpans,
         style: defaultTextStyle ?? const TextStyle(fontSize: 14.0), // Default font size if not provided
       ),
     );
@@ -88,11 +89,11 @@ class HighlightedText extends StatelessWidget {
 }
 
 // A class to hold text, its style, specific indices, and font size for highlighting
-class HighlightText {
-  final String text;
-  final TextStyle style;
+class HighlightedTextStyle {
+  final String text; // Text to highlight
+  final TextStyle style; // Style for the highlighted text
   final List<int>? specificIndices; // Optional list of specific indices for highlighting
   final double fontSize; // Font size for the highlighted text
 
-  HighlightText(this.text, this.style, {this.specificIndices, this.fontSize = 14.0}); // Default font size is 14.0
+  HighlightedTextStyle(this.text, this.style, {this.specificIndices, this.fontSize = 14.0}); // Default font size is 14.0
 }

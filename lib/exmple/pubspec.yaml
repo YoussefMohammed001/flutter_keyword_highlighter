@@ -1,0 +1,6 @@
+name: flutter_keyword_highlighter_example
+description: A simple example of how to use the flutter_keyword_highlighter package.
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_keyword_highlighter:
