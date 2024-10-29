@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 
 class HighlightedText extends StatelessWidget {
   final String content; // Renamed from 'paragraph' to 'content'
-  final List<HighlightedTextStyle> highlightedTextStyles; // Renamed from 'highlightTexts' to 'highlightedTextStyles'
-  final TextStyle? defaultTextStyle; // Custom default text style for the content
+  final List<HighlightedTextStyle>
+      highlightedTextStyles; // Renamed from 'highlightTexts' to 'highlightedTextStyles'
+  final TextStyle?
+      defaultTextStyle; // Custom default text style for the content
 
   const HighlightedText({
     super.key,
@@ -33,7 +35,9 @@ class HighlightedText extends StatelessWidget {
         if (match.start > 0) {
           textSpans.add(TextSpan(
             text: content.substring(startIndex, startIndex + match.start),
-            style: defaultTextStyle ?? const TextStyle(fontSize: 14.0), // Default font size if not provided
+            style: defaultTextStyle ??
+                const TextStyle(
+                    fontSize: 14.0), // Default font size if not provided
           ));
         }
 
@@ -41,7 +45,9 @@ class HighlightedText extends StatelessWidget {
         textSpans.add(
           TextSpan(
             text: match.group(0),
-            style: highlight.style.copyWith(fontSize: highlight.fontSize), // Use the specific style and font size for this highlight
+            style: highlight.style.copyWith(
+                fontSize: highlight
+                    .fontSize), // Use the specific style and font size for this highlight
           ),
         );
 
@@ -54,17 +60,21 @@ class HighlightedText extends StatelessWidget {
           // Check if index is within bounds
           if (index >= 0 && index < content.length) {
             final char = content[index];
-            textSpans.insert(index, TextSpan(
-              text: char,
-              style: const TextStyle(
-                backgroundColor: Colors.yellow, // Default background for specific index
-                fontWeight: FontWeight.bold,
-              ),
-            ));
+            textSpans.insert(
+                index,
+                TextSpan(
+                  text: char,
+                  style: const TextStyle(
+                    backgroundColor:
+                        Colors.yellow, // Default background for specific index
+                    fontWeight: FontWeight.bold,
+                  ),
+                ));
           } else {
             // Log a warning for out-of-bounds index
             if (kDebugMode) {
-              print('Warning: Specific index $index is out of bounds for the content.');
+              print(
+                  'Warning: Specific index $index is out of bounds for the content.');
             }
           }
         }
@@ -75,14 +85,18 @@ class HighlightedText extends StatelessWidget {
     if (startIndex < content.length) {
       textSpans.add(TextSpan(
         text: content.substring(startIndex),
-        style: defaultTextStyle ?? const TextStyle(fontSize: 14.0), // Default font size if not provided
+        style: defaultTextStyle ??
+            const TextStyle(
+                fontSize: 14.0), // Default font size if not provided
       ));
     }
 
     return RichText(
       text: TextSpan(
         children: textSpans,
-        style: defaultTextStyle ?? const TextStyle(fontSize: 14.0), // Default font size if not provided
+        style: defaultTextStyle ??
+            const TextStyle(
+                fontSize: 14.0), // Default font size if not provided
       ),
     );
   }
@@ -92,8 +106,11 @@ class HighlightedText extends StatelessWidget {
 class HighlightedTextStyle {
   final String text; // Text to highlight
   final TextStyle style; // Style for the highlighted text
-  final List<int>? specificIndices; // Optional list of specific indices for highlighting
+  final List<int>?
+      specificIndices; // Optional list of specific indices for highlighting
   final double fontSize; // Font size for the highlighted text
 
-  HighlightedTextStyle(this.text, this.style, {this.specificIndices, this.fontSize = 14.0}); // Default font size is 14.0
+  HighlightedTextStyle(this.text, this.style,
+      {this.specificIndices,
+      this.fontSize = 14.0}); // Default font size is 14.0
 }
