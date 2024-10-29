@@ -1,14 +1,16 @@
 library flutter_keyword_highlighter;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+/// A widget that highlights specific keywords or phrases within a given content.
+///
+/// The `HighlightedText` widget takes a [content] string, a list of [highlightedTextStyles],
+/// and an optional [defaultTextStyle] for unhighlighted text. Each keyword or phrase in
+/// `highlightedTextStyles` will appear with its specified color and font style.
 class HighlightedText extends StatelessWidget {
-  final String content; // Renamed from 'paragraph' to 'content'
-  final List<HighlightedTextStyle>
-      highlightedTextStyles; // Renamed from 'highlightTexts' to 'highlightedTextStyles'
-  final TextStyle?
-      defaultTextStyle; // Custom default text style for the content
+  final String content; // The main content to be displayed
+  final List<HighlightedTextStyle> highlightedTextStyles; // List of highlighted text styles
+  final TextStyle? defaultTextStyle; // Custom default text style for content
 
   const HighlightedText({
     super.key,
@@ -22,72 +24,42 @@ class HighlightedText extends StatelessWidget {
     List<TextSpan> textSpans = [];
     int startIndex = 0;
 
-    // Iterate through the list of highlighted text styles
+    // Iterate through each highlighted text style
     for (final highlight in highlightedTextStyles) {
       String escapedText = RegExp.escape(highlight.text);
       RegExp regex = RegExp(escapedText, caseSensitive: false);
 
-      // Add text before the highlight
+      // Process each occurrence of the text to be highlighted
       while (true) {
         final match = regex.firstMatch(content.substring(startIndex));
-        if (match == null) break; // No more matches
+        if (match == null) break; // Exit loop if no more matches
 
+        // Add non-highlighted text before the matched highlighted text
         if (match.start > 0) {
           textSpans.add(TextSpan(
             text: content.substring(startIndex, startIndex + match.start),
             style: defaultTextStyle ??
-                const TextStyle(
-                    fontSize: 14.0), // Default font size if not provided
+                const TextStyle(fontSize: 14.0, color: Colors.black),
           ));
         }
 
-        // Add highlighted text with its specific font size
-        textSpans.add(
-          TextSpan(
-            text: match.group(0),
-            style: highlight.style.copyWith(
-                fontSize: highlight
-                    .fontSize), // Use the specific style and font size for this highlight
-          ),
-        );
+        // Add highlighted text
+        textSpans.add(TextSpan(
+          text: match.group(0),
+          style: highlight.style.copyWith(
+              fontSize: highlight.fontSize, color: highlight.color),
+        ));
 
-        startIndex += match.end; // Move the start to after the match
-      }
-
-      // Highlight specific indices if provided
-      if (highlight.specificIndices != null) {
-        for (int index in highlight.specificIndices!) {
-          // Check if index is within bounds
-          if (index >= 0 && index < content.length) {
-            final char = content[index];
-            textSpans.insert(
-                index,
-                TextSpan(
-                  text: char,
-                  style: const TextStyle(
-                    backgroundColor:
-                        Colors.yellow, // Default background for specific index
-                    fontWeight: FontWeight.bold,
-                  ),
-                ));
-          } else {
-            // Log a warning for out-of-bounds index
-            if (kDebugMode) {
-              print(
-                  'Warning: Specific index $index is out of bounds for the content.');
-            }
-          }
-        }
+        startIndex += match.end; // Move startIndex past the matched text
       }
     }
 
-    // Add remaining text after last highlight
+    // Add remaining unhighlighted text after the last match
     if (startIndex < content.length) {
       textSpans.add(TextSpan(
         text: content.substring(startIndex),
         style: defaultTextStyle ??
-            const TextStyle(
-                fontSize: 14.0), // Default font size if not provided
+            const TextStyle(fontSize: 14.0, color: Colors.black),
       ));
     }
 
@@ -95,22 +67,24 @@ class HighlightedText extends StatelessWidget {
       text: TextSpan(
         children: textSpans,
         style: defaultTextStyle ??
-            const TextStyle(
-                fontSize: 14.0), // Default font size if not provided
+            const TextStyle(fontSize: 14.0, color: Colors.black),
       ),
     );
   }
 }
 
-// A class to hold text, its style, specific indices, and font size for highlighting
+/// A class that represents a segment of text to be highlighted, with customizable
+/// color, font style, and font size.
 class HighlightedTextStyle {
   final String text; // Text to highlight
-  final TextStyle style; // Style for the highlighted text
-  final List<int>?
-      specificIndices; // Optional list of specific indices for highlighting
+  final TextStyle style; // Text style for the highlighted text
   final double fontSize; // Font size for the highlighted text
+  final Color color; // Color for the highlighted text
 
-  HighlightedTextStyle(this.text, this.style,
-      {this.specificIndices,
-      this.fontSize = 14.0}); // Default font size is 14.0
+  HighlightedTextStyle(
+      this.text, {
+        required this.style,
+        this.fontSize = 14.0,
+        this.color = Colors.black, // Default color for highlighted text
+      });
 }
