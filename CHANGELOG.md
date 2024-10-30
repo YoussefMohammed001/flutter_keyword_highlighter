@@ -4,6 +4,7 @@
 ### Added
 - New example app under `example/lib/` folder to demonstrate package functionality.
 - Added `allowsPartialMatch` parameter in `HighlightedTextStyle` for flexible keyword matching.
+- Added `image example` for the package.
 
 ### Fixed
 - Improved keyword matching accuracy.
