@@ -27,7 +27,10 @@ class HighlightExampleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Keyword Highlighter Example'),
+        title: const Text(
+          'Keyword Highlighter Example',
+          style: TextStyle(fontSize: 18.0),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

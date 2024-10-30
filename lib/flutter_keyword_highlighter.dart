@@ -81,7 +81,7 @@ class HighlightedText extends StatelessWidget {
       text: TextSpan(
         children: textSpans,
         style: defaultTextStyle ??
-            const TextStyle(fontSize: 14.0, color: Colors.black),
+            const TextStyle(fontSize: 15.0, color: Colors.black),
       ),
     );
   }
