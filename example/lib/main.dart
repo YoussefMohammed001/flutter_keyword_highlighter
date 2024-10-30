@@ -58,7 +58,9 @@ class HighlightExampleScreen extends StatelessWidget {
             HighlightedTextStyle(
               highlightedText: 'applications',
               customStyle: const TextStyle(
-                  color: Colors.red, fontWeight: FontWeight.w600),
+                  backgroundColor: Colors.yellow,
+                  color: Colors.red,
+                  fontWeight: FontWeight.w600),
             ),
           ],
         ),
