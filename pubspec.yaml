@@ -1,6 +1,6 @@
 name: flutter_keyword_highlighter
 description: "A flexible Flutter package for highlighting specific keywords and characters in text with customizable styles, making it perfect for text-based applications and user interfaces."
-version: 0.1.3  # Update the version if needed.
+version: 1.0.2  # Update the version if needed.
 homepage: https://github.com/YoussefMohammed001/flutter_keyword_highlighter  # Replace with your actual URL
 repository: https://github.com/YoussefMohammed001/flutter_keyword_highlighter  # Replace with your actual repository URL
 issue_tracker: https://github.com/YoussefMohammed001/flutter_keyword_highlighter/issues  # Replace with your actual issue tracker URL

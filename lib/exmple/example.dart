@@ -32,25 +32,24 @@ class HighlightExampleScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: HighlightedText(
-          content:
-              'Flutter is an open-source UI software development toolkit created by Google. It is used to develop cross-platform applications for Android, iOS, Linux, and more.',
-          defaultTextStyle:
-              const TextStyle(fontSize: 16.0, color: Colors.black),
+
+          content: 'Flutter is an open-source UI software development toolkit created by Google Googleee. It is used to develop cross-platform applications for Android, iOS, Linux, and more.',
+          defaultTextStyle: const TextStyle(fontSize: 16.0, color: Colors.black),
           highlightedTextStyles: [
             HighlightedTextStyle(
-              'Flutter',
-              const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-              fontSize: 18.0,
-              containsMatch: true, // Highlights any occurrence of "Flutter"
+              highlightedText:   'Flutter',
+              customStyle:    const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+              allowsPartialMatch: true, // Highlights any occurrence of "Flutter"
             ),
             HighlightedTextStyle(
-              'Google',
-              const TextStyle(color: Colors.green, fontStyle: FontStyle.italic),
-              containsMatch: false, // Highlights exact word match for "Google"
+              highlightedText:   'Google',
+
+              customStyle:   const TextStyle(color: Colors.green, fontStyle: FontStyle.italic),
+              allowsPartialMatch: false, // Highlights exact word match for "Google"
             ),
             HighlightedTextStyle(
-              'applications',
-              const TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+              highlightedText:     'applications',
+              customStyle:   const TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
             ),
           ],
         ),
