@@ -46,7 +46,8 @@ class HighlightedText extends StatelessWidget {
         // Add unhighlighted text span before the match.
         if (match.start > 0) {
           textSpans.add(TextSpan(
-            text: content.substring(currentStartIndex, currentStartIndex + match.start),
+            text: content.substring(
+                currentStartIndex, currentStartIndex + match.start),
             style: defaultTextStyle ??
                 const TextStyle(fontSize: 14.0, color: Colors.black),
           ));
