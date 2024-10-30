@@ -1,7 +1,8 @@
 Flutter Keyword Highlighter
 
 
-![Example Image](https://github.com/user-attachments/assets/99f368ff-6682-4ebd-9d04-164b05cc5f27)
+![Example Image](https://github.com/user-attachments/assets/46d40a07-4a54-4068-8a62-16b35b300315)
+
 
 
 flutter_keyword_highlighter is a highly customizable Flutter package that enables easy highlighting of specific keywords or phrases within a block of text. Whether you need to emphasize key terms, support search functionality, or enhance readability for educational content, this package provides extensive styling options for individual words or phrases. You can choose to highlight either exact matches or any instances containing the keyword, making it versatile for various use cases.
