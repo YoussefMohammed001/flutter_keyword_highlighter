@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.4] - 2024-10-30
+## [1.0.6] - 2024-11-1
 ### Added
 - New example app under `example/lib/` folder to demonstrate package functionality.
 - Added `allowsPartialMatch` parameter in `HighlightedTextStyle` for flexible keyword matching.

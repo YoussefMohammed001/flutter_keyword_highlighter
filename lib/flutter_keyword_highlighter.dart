@@ -49,7 +49,9 @@ class HighlightedText extends StatelessWidget {
             text: content.substring(
                 currentStartIndex, currentStartIndex + match.start),
             style: defaultTextStyle ??
-                const TextStyle(fontSize: 14.0, color: Colors.black),
+                const TextStyle(
+                  fontSize: 14.0,
+                ),
           ));
         }
 
@@ -57,9 +59,7 @@ class HighlightedText extends StatelessWidget {
         textSpans.add(
           TextSpan(
             text: match.group(0),
-            style: highlightStyle.customStyle.copyWith(
-              fontSize: highlightStyle.highlightFontSize,
-            ),
+            style: highlightStyle.customStyle,
           ),
         );
 
@@ -92,11 +92,8 @@ class HighlightedTextStyle {
   /// Text to be highlighted in the main content.
   final String highlightedText;
 
-  /// Custom style for the highlighted text, including color, font, etc.
+  /// Custom style for the highlighted text, including color, font, and font size.
   final TextStyle customStyle;
-
-  /// Font size for the highlighted text. Defaults to 14.0 if not specified.
-  final double highlightFontSize;
 
   /// Determines if this highlight should match any occurrence
   /// (substring match) or an exact match.
@@ -106,7 +103,6 @@ class HighlightedTextStyle {
   HighlightedTextStyle({
     required this.highlightedText,
     required this.customStyle,
-    this.highlightFontSize = 14.0,
     this.allowsPartialMatch = false,
   });
 }
