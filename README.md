@@ -13,7 +13,7 @@ Features
 	•	Custom Styles for Each Highlight: Apply unique styles—such as color, font weight, or font size—to each highlighted text.
 	•	Match Options: Select between exact word matching or partial matching to broaden search and highlight options.
 	•	Cohesive Text Styling: Specify a default style for the remaining, non-highlighted text to maintain a unified look and feel.
-
+	•	Adaptive Text Color: When no default color is specified, the widget automatically adapts to the app’s theme, using black text in light mode and white text in dark mode.
  
 
 ## Installation
@@ -22,4 +22,4 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_keyword_highlighter: ^1.1.0 # Check for the latest version on pub.dev
+  flutter_keyword_highlighter: ^1.1.1 # Check for the latest version on pub.dev

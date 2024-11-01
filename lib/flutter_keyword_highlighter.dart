@@ -13,7 +13,8 @@ class HighlightedText extends StatelessWidget {
   final List<HighlightedTextStyle> highlightedTextStyles;
 
   /// An optional default text style for the content text.
-  /// If not provided, a default font size and black color will be used.
+  /// If not provided, a default font size and black/white color will be used
+  /// based on the app's theme.
   final TextStyle? defaultTextStyle;
 
   const HighlightedText({
@@ -28,12 +29,14 @@ class HighlightedText extends StatelessWidget {
     List<TextSpan> textSpans = []; // Holds styled text spans for RichText.
     int currentStartIndex = 0; // Tracks current index in content string.
 
-    // Define the default style with black text color if not provided.
-    TextStyle effectiveDefaultStyle = defaultTextStyle ??
-        const TextStyle(
-          fontSize: 14.0,
-          color: Colors.black,
-        );
+    // Determine default color based on theme if no color is specified.
+    TextStyle effectiveDefaultStyle =
+        (defaultTextStyle ?? const TextStyle(fontSize: 14.0)).copyWith(
+      color: defaultTextStyle?.color ??
+          (Theme.of(context).brightness == Brightness.light
+              ? Colors.black
+              : Colors.white),
+    );
 
     // Loop through each highlight style in the list to apply to content text.
     for (final highlightStyle in highlightedTextStyles) {
