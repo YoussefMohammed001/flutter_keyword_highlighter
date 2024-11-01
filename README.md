@@ -22,4 +22,4 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_keyword_highlighter: ^1.0.6 # Check for the latest version on pub.dev
+  flutter_keyword_highlighter: ^1.0.7 # Check for the latest version on pub.dev
