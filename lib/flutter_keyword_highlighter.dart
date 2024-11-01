@@ -13,7 +13,8 @@ class HighlightedText extends StatelessWidget {
   final List<HighlightedTextStyle> highlightedTextStyles;
 
   /// An optional default text style for the content text.
-  /// If not provided, a default font size and black color will be used.
+  /// If not provided, a default font size and color based on the theme
+  /// (black for light mode, white for dark mode) will be used.
   final TextStyle? defaultTextStyle;
 
   const HighlightedText({
@@ -27,6 +28,15 @@ class HighlightedText extends StatelessWidget {
   Widget build(BuildContext context) {
     List<TextSpan> textSpans = []; // Holds styled text spans for RichText.
     int currentStartIndex = 0; // Tracks current index in content string.
+
+    // Determine default text color based on app theme
+    TextStyle effectiveDefaultStyle = defaultTextStyle ??
+        TextStyle(
+          fontSize: 14.0,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white
+              : Colors.black,
+        );
 
     // Loop through each highlight style in the list to apply to content text.
     for (final highlightStyle in highlightedTextStyles) {
@@ -48,10 +58,7 @@ class HighlightedText extends StatelessWidget {
           textSpans.add(TextSpan(
             text: content.substring(
                 currentStartIndex, currentStartIndex + match.start),
-            style: defaultTextStyle ??
-                const TextStyle(
-                  fontSize: 14.0,
-                ),
+            style: effectiveDefaultStyle,
           ));
         }
 
@@ -71,8 +78,7 @@ class HighlightedText extends StatelessWidget {
     if (currentStartIndex < content.length) {
       textSpans.add(TextSpan(
         text: content.substring(currentStartIndex),
-        style: defaultTextStyle ??
-            const TextStyle(fontSize: 14.0,),
+        style: effectiveDefaultStyle,
       ));
     }
 
@@ -80,8 +86,7 @@ class HighlightedText extends StatelessWidget {
     return RichText(
       text: TextSpan(
         children: textSpans,
-        style: defaultTextStyle ??
-            const TextStyle(fontSize: 14.0,),
+        style: effectiveDefaultStyle,
       ),
     );
   }

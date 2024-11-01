@@ -37,8 +37,9 @@ class HighlightExampleScreen extends StatelessWidget {
         child: HighlightedText(
           content:
               'Flutter is an open-source UI software development toolkit created by Google Googleee. It is used to develop cross-platform applications for Android, iOS, Linux, and more.',
-          defaultTextStyle:
-              const TextStyle(fontSize: 16.0, color: Colors.black),
+          defaultTextStyle: const TextStyle(
+            fontSize: 16.0,
+          ),
           highlightedTextStyles: [
             HighlightedTextStyle(
               highlightedText: 'Flutter',
